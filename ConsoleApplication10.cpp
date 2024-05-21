@@ -1,19 +1,21 @@
 ﻿#include <iostream>
 #include <vector>
+#include <random>
+#include <ctime>
 #include <algorithm>
 
 int hash(int key, int size) {
     return key % size;
 }
 
-void insert(std:: int key, int size) {
+void insert(std::vector<int>& table, int key, int size) {
     int index = hash(key, size);
 
     while (table[index] != -1) {
         index = (index + 1) % size;
     }
 
-    
+    table[index] = key;
 }
 
 bool search(const std::vector<int>& table, int key, int size) {
@@ -50,8 +52,10 @@ int main() {
     const int rangeStart = 44000;
     const int rangeEnd = 73000;
 
-  
-    
+    std::mt19937 rng(time(nullptr));
+    std::uniform_int_distribution<int> dist(rangeStart, rangeEnd);
+
+    std::vector<int> hashTable(M, -1);
 
     std::vector<int> array(n);
     for (int i = 0; i < n; ++i) {
@@ -60,14 +64,14 @@ int main() {
     }
 
     std::cout << "Исходный массив:" << std::endl;
-    for (int i = 0; i < n; +i) {
+    for (int i = 0; i < n; ++i) {
         std::cout << array[i] << " ";
     }
     std::cout << std::endl;
 
     printTable(hashTable);
 
-    int searchKey = array 0 ; // Просто берем первый элемент для поиска
+    int searchKey = array[0]; // Просто берем первый элемент для поиска
     if (search(hashTable, searchKey, M)) {
         std::cout << "\nЭлемент " << searchKey << " найден в хеш-таблице." << std::endl;
     }
